@@ -1,25 +1,27 @@
-{% extends "layout-cine.html" %}
-
+{% extends "layout.html" %} 
 {% block container %}
-<h2>Compra de Boletos</h2>
-<form action="/resultado" method="post">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" required><br>
 
-    <label for="cantidad_personas">Cantidad de compradores:</label>
-    <input type="number" id="cantidad_personas" name="cantidad_personas" min="1" required><br>
+    <form action="/resultado" method="post">
+        <label for="n1">Número 1</label>
+        <input type="number" id="n1" name="n1" required><br>
 
-    <label for="cantidad_boletos">Cantidad de boletos:</label>
-    <input type="number" id="cantidad_boletos" name="cantidad_boletos" min="1" max="7" required><br>
+        <label for="n2">Número 2</label>
+        <input type="number" id="n2" name="n2" required><br>
 
-    <label>Método de pago:</label><br>
-    <input type="radio" id="efectivo" name="metodo_pago" value="efectivo" required>
-    <label for="efectivo">Efectivo</label><br>
+        <label>Operación:</label><br>
+        <input type="radio" id="sum" name="operacion" value="suma" required>
+        <label for="sum">Suma</label><br>
 
-    <input type="radio" id="tarjeta" name="metodo_pago" value="tarjeta" required>
-    <label for="tarjeta">Tarjeta Cinépolis</label><br>
+        <input type="radio" id="res" name="operacion" value="resta">
+        <label for="res">Resta</label><br>
 
-    <button type="submit">Procesar</button>
-    <button type="reset">Salir</button>
-</form>
+        <input type="radio" id="mul" name="operacion" value="multiplicacion">
+        <label for="mul">Multiplicación</label><br>
+
+        <input type="radio" id="div" name="operacion" value="division">
+        <label for="div">División</label><br>
+
+        <input type="submit" value="Calcular">
+    </form>
+
 {% endblock %}
