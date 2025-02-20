@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template,request
+import forms 
 
 app = Flask(__name__)
 
@@ -60,7 +61,6 @@ def operas1():
 
 @app.route("/resultado", methods=["POST"])
 def result():
-    try:
         n1 = float(request.form.get("n1"))
         n2 = float(request.form.get("n2"))
         operacion = request.form.get("operacion")
@@ -84,8 +84,21 @@ def result():
 
         return f"La {op_texto} de {n1} y {n2} es: {resultado}"
 
-    except ValueError:
-        return "Error: Ingresa valores numéricos válidos."
+@app.route("/alumnos", methods=["GET", "POST"])
+def alumnos():
+    mat=''
+    nom=''
+    ape=''
+    email=''
+    alumno_class=forms.UserForm(request.form)
+
+    if request.method == 'POST':
+        mat= alumno_class.matricula.data
+        nom= alumno_class.nombre.data
+        ape= alumno_class.apellido.data
+        email= alumno_class.correo.data
+
+    return render_template("alumnos.html",form=alumno_class,mat=mat,nom=nom,ape=ape,email=email)
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
