@@ -3,10 +3,15 @@ from wtforms import StringField, PasswordField, EmailField, BooleanField, Submit
 from wtforms import validators
 
 class UserForm(Form):
-    matricula=IntegerField("Matricula"[
-        validators.DataRequired(message="El campo es requerido")
-        validators.lenght(min=3,max=10, message="3-10 caracteres")
+    matricula=IntegerField("Matricula",[
+        validators.DataRequired(message="El campo es requerido"),
     ])
-    nombre=StringField("Nombre")
-    apellido=StringField("Apellido")
-    correo=EmailField("Correo")
+    nombre=StringField("Nombre",[
+        validators.DataRequired(message="El campo es requerido"),
+    ])
+    apellido=StringField("Apellido",[
+        validators.DataRequired(message="El campo es requerido"),
+    ])
+    correo=EmailField("Correo",[
+        validators.DataRequired(message="El campo es requerido"),
+    ])
