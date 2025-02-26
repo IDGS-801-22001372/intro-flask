@@ -18,3 +18,22 @@
 {%endif%}
 
 {%endmacro%}
+
+{% macro radioButtons(field) %}
+<div class="mb-3">
+    <label class="form-label fw-bold">{{ field.label }}</label>
+    {% for subfield in field %}
+    <div class="form-check d-flex align-items-center gap-2">
+        {{ subfield(class="form-check-input", required=True) }}
+        <label for="{{ subfield.id }}" class="form-check-label">{{ subfield.label }}</label>
+    </div>
+    {% endfor %}
+</div>
+{% if field.errors %}
+<ul class="text-danger">
+    {% for error in field.errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}

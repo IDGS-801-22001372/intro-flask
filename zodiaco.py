@@ -1,7 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Blueprint, render_template, request
 from datetime import datetime
+from flask import g, flash
+import forms
 
-app = Flask(__name__)
+
+zodiaco_bp = Blueprint("zodiaco", __name__, url_prefix="")
 
 zodiaco_chino = [
     {"signo": "Rata", "imagen": "rata.svg"},
@@ -29,28 +32,32 @@ def calcular_edad(dia, mes, año):
     edad = hoy.year - nacimiento.year - ((hoy.month, hoy.day) < (nacimiento.month, nacimiento.day))
     return edad
 
-@app.route("/", methods=["GET", "POST"])
+@zodiaco_bp.route("/zodiaco", methods=["GET", "POST"])
 def index():
-    imagen = ""
+    form = forms.ZodiacoForm(request.form)
     signo = ""
+    imagen = ""
+    edad = ""
+    sexo = ""
     nombre = ""
     paterno = ""
     materno = ""
-    edad = ""
 
-    if request.method == "POST":
-        nombre = request.form["nombre"]
-        paterno = request.form["Apterno"]
-        materno = request.form["Amaterno"]
-        dia = int(request.form["dia"])
-        mes = int(request.form["mes"])
-        año = int(request.form["año"])
+    if request.method == "POST" and form.validate():
+        nombre = form.nombre.data
+        paterno = form.paterno.data
+        materno = form.materno.data
+        dia = form.dia.data
+        mes = form.mes.data
+        anio = form.anio.data
+        sexo = form.sexo.data.capitalize()
+        signo, imagen = obtener_signo_chino(anio)
+        edad = calcular_edad(dia, mes, anio)
 
-        if año >= 1900:
-            signo, imagen = obtener_signo_chino(año)
-            edad = calcular_edad(dia, mes, año)
+        mensaje = f"{nombre} {paterno} {materno}, tu signo es {signo}, tienes {edad} años y tu sexo es {sexo}."
+        flash(mensaje)
+    elif request.method == "GET":
+        form = forms.ZodiacoForm()
 
-    return render_template("zodiaco.html", nombre=nombre, paterno=paterno, materno=materno, edad=edad, signo=signo, imagen=imagen)
-
-if __name__ == "__main__":
-    app.run(debug=True, port=3000)
+    return render_template("zodiaco.html", form=form, signo=signo, imagen=imagen, edad=edad, sexo=sexo,
+                           nombre=nombre, paterno=paterno, materno=materno)

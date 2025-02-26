@@ -1,14 +1,14 @@
-from flask import Flask, render_template, request
+from flask import Blueprint, render_template, request
 
-app = Flask(__name__)
+boletos_bp = Blueprint("boletos", __name__, url_prefix="/boletos")
 
 PRECIO_BOLETO = 12
 
-@app.route("/")
+@boletos_bp.route("/")
 def index():
     return render_template("boletos.html")
 
-@app.route("/resultado", methods=["POST"])
+@boletos_bp.route("/resultado", methods=["POST"])
 def resultado():
     nombre = request.form["nombre"]
     cantidad_personas = int(request.form["cantidad_personas"])
@@ -32,7 +32,3 @@ def resultado():
         total *= 0.90
 
     return render_template("total.html", nombre=nombre, cantidad_boletos=cantidad_boletos, total=total, cantidad_personas=cantidad_personas)
-
-
-if __name__ == "__main__":
-    app.run(debug=True, port=3000)
